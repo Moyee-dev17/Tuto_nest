@@ -3,6 +3,7 @@ import { PrismaService } from "src/db.service";
 import * as bcrypt from "bcrypt";
 import { registerUserdto} from "./dto/registerUster.dto";
 import { updateCategorieDto } from "./dto/update-categorie";
+import { updateregisterDto } from "./dto/updateregister-user.dto";
 
 enum Role {
   User = 1,
@@ -56,11 +57,8 @@ async remove(id:number){
     return await this.prisma.users.delete({where:{id}})
 }
 
-async update(id: number, updateData: updateCategorieDto) {
-  return await this.prisma.users.update({
-    where: { id },
-    data: updateData,
-  });
+async update(id:number , updateData:updateregisterDto){
+  return await this.prisma.categories.update({where:{id},data:updateData
+  })
 }
-
 }

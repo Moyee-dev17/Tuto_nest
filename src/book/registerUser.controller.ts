@@ -3,11 +3,12 @@ import { Body, Controller , Param, Post,Patch, Get} from "@nestjs/common";
 import { RegisterUserService } from "./registerUser.service";
 import { registerUserdto } from "./dto/registerUster.dto";
 import { updateCategorieDto } from "./dto/update-categorie";
+import { updateregisterDto } from "./dto/updateregister-user.dto";
 
 @Controller('register')
 
 export class RegisterController{
-    constructor(private readonly registerservice:RegisterUserService){}
+    constructor(private readonly registerservice:RegisterUserService,){}
 
 @Post()
 create(@Body() body:registerUserdto){
@@ -26,7 +27,7 @@ findAll(){
 
 
 @Patch(':id')
-update(@Param('id') id:number , updateData: updateCategorieDto){
-    return this.registerservice.update(id,updateData)
+update(@Param('id') id:number ,@Body() body:updateregisterDto){
+    return this.registerservice.update(+id,body)
 }
 }

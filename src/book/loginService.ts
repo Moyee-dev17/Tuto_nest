@@ -2,12 +2,15 @@ import { dbModule } from "src/db.module";
 import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/db.service";
 import { loginDto } from "./dto/loginDto";
-import bcrypt from "bcrypt"
+import * as bcrypt from "bcrypt"
+import { JwtService } from "@nestjs/jwt";
+import { AuthService } from "src/auth/auth.service";
+
 
 @Injectable()
 
 export class loginService{
-    constructor(private readonly prisma:PrismaService){}
+    constructor(private readonly prisma:PrismaService , private readonly authService:AuthService){}
 
     async loginUser(body:loginDto){
         try {
@@ -19,7 +22,20 @@ export class loginService{
               if(!isMatch){
                 throw new BadRequestException('mot de passe incorrect')    
               } 
+            const payload={id:userExist.id}
+            console.log(payload)
+            const token=await this.authService.tokenGenerate(payload);
+            console.log(token)
+            return{
+             token:token,
+                data:{
+                   name:userExist.name,
+                   lastname:userExist.lastname,
+                   email:userExist.email,
+                }
+            }
         } catch (error) {
+            console.log(error)
             throw new InternalServerErrorException("internal server error")
         }
     }

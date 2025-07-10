@@ -4,7 +4,7 @@ import { RegisterController } from "./registerUser.controller";
 import { Module } from "@nestjs/common";
 
 @Module({
-    imports:[dbModule],
+    imports:[dbModule,],
     providers:[RegisterUserService],
     controllers:[RegisterController]
 })

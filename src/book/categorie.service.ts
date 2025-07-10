@@ -3,7 +3,7 @@ import { BadRequestException, Injectable, InternalServerErrorException } from "@
 import { PrismaClient } from "@prisma/client";
 import { createCategorieDto } from "./dto/create-categorie.dto";
 import { PrismaService } from "src/db.service";
-
+import { updateCategorieDto } from "./dto/update-categorie";
 
 Injectable()
 
@@ -19,6 +19,7 @@ export class CategorieService{
           description:body.description,
           type:body.type
       }})
+
     } catch (error) {
       throw new InternalServerErrorException('internal server error', error)
     }
@@ -36,4 +37,10 @@ async remove(id:number){
   return await this.prisma.categories.delete({where:{id}})
 }
 
+async update(id: number, updateData: updateCategorieDto) {
+  return await this.prisma.users.update({
+    where: { id },
+    data: updateData,
+  });
+}
 }
